@@ -1,0 +1,198 @@
+//AUTHOR: Mary Bennett
+//DATE: 04/25/2022
+//COURSE: CPT 187
+//PURPOSE: The purpose of this program is to read and append the file for the accounts
+
+
+
+package edu.cpt187.bennett.exercise7;
+
+//IMPORT SCANNER
+import java.util.Scanner;
+//IMPORT FILE INPUT STREAM
+import java.io.FileInputStream;
+//IMPORT IOEXCEPTION
+import java.io.IOException;
+//IMPORT PRINT WRITER
+import java.io.PrintWriter;
+//IMPORT FILE WRITER
+import java.io.FileWriter;
+
+//START OF USER ACCOUNTS CLASS
+public class UserAccounts 
+{
+	//CLASS ATTRIBUTES
+	private final int NOT_FOUND = -1;
+	private final int RESET_VALUE = 0;
+	private final int MAXIMUM_RECORDS = 50;
+	private String[] userNames = new String[MAXIMUM_RECORDS];
+	private String[] passwords = new String[MAXIMUM_RECORDS];
+	private String masterFileName = "";
+	private int recordCount = 0;
+	private int searchedIndex = 0;
+	
+	
+	
+	
+	//CONSTRUCTOR
+	public UserAccounts(String borrowedFileName)
+	{
+		masterFileName = borrowedFileName;
+	}//END OF CONSTRUCTOR
+	
+	
+	
+	
+	//SETTERS
+	
+	
+	//SET USER ACCOUNT ARRAYS
+	public void setUserAccountArrays()
+	{
+		//TRY BLOCK
+		try
+		{
+			//OPEN FILE
+			Scanner infile = new Scanner (new FileInputStream(masterFileName));
+			
+			recordCount = RESET_VALUE;
+			
+			//WHILE LOOP
+			while(infile.hasNext() == true && recordCount < MAXIMUM_RECORDS)
+			{
+				userNames[recordCount] = infile.next();
+				passwords[recordCount] = infile.next();
+				
+				recordCount++;
+			}//END OF WHILE LOOP
+			
+			//CLOSE FILE
+			infile.close();
+
+		}//END OF TRY BLOCK
+		
+		//CATCH BLOCK
+		catch(IOException ex)
+		{
+			recordCount = NOT_FOUND;
+		}//END OF CATCH BLOCK
+		
+	}//END OF SET USER ACCOUNT ARRAYS
+	
+	
+	//SET SEARCHED INDEX
+	public void setSearchedIndex(String borrowedUserName)
+	{
+		searchedIndex = getSeqSearch(borrowedUserName);
+	}//END OF SET SEARCHED INDEX
+	
+	
+	//SET OVERLOAD SEARCHED INDEX
+	public void setSearchedIndex(String borrowedUserName, String borrowedPassword)
+	{
+		searchedIndex = getSeqSearch(borrowedUserName);
+		
+		//SELECTION STRUCTURE
+		if(searchedIndex >= RESET_VALUE && getPasswordMatch(borrowedPassword) == false)
+		{
+			searchedIndex = NOT_FOUND;
+		}//END OF SELECTION STRUCTURE
+		
+	}//END OF SET OVERLOAD SEARCHED INDEX
+	
+	
+	//SET WRITE ONE RECORD
+	public void setWriteOneRecord(String borrowedUserName, String borrowedPassword)
+	{
+		//TRY BLOCK
+		try
+		{
+			//PRINT FILE
+			PrintWriter filePW = new PrintWriter(new FileWriter(masterFileName, true));
+			
+			filePW.printf("%n%s\t%s\t", borrowedUserName, borrowedPassword);
+			
+			recordCount++;
+			
+			//CLOSE FILE
+			filePW.close();
+		}//END OF TRY BLOCK
+		
+		//CATCH BLOCK
+		catch(IOException ex)
+		{
+		}//END OF CATCH BLOCK
+		
+	}//END OF SET WRITE ONE RECORD
+	
+	
+	
+	
+	//GETTERS
+	
+	
+	//GET SEQ SEARCH
+	public int getSeqSearch(String borroweBorrowedUserName)
+	{
+		int localIndex = 0;
+		
+		int localFound = NOT_FOUND;
+		
+		//WHILE LOOP
+		while(localIndex < recordCount)
+		{
+			//SELECTION STRUCTURE
+			if(userNames[localIndex].equalsIgnoreCase(borroweBorrowedUserName) == true)
+			{
+				localFound = localIndex;
+				localIndex = recordCount;
+			}//END OF SELECTION STRUCTURE
+			
+			else
+			{
+				localIndex++;
+			}
+		}//END OF WHILE LOOP
+		
+		return localFound;
+	}//END OF GET SEQ SEARCH
+	
+	
+	//GET PASSWORD MATCH
+	public boolean getPasswordMatch(String borrowedBorrowedPassword)
+	{	
+		return passwords[getSearchedIndex()].equals(borrowedBorrowedPassword);
+	}//END OF GET PASSWORD MATCH
+	
+	
+	//GET FILE NAME
+	public String getFileName()
+	{
+		return masterFileName;
+	}//END OF GET FILE NAME
+	
+	
+	//GET MAXIMUM RECORDS
+	public int getMaximumRecords()
+	{
+		return MAXIMUM_RECORDS;
+	}//END OF GET MAXIMUM RECORDS
+	
+	
+	//GET RECORD COUNT
+	public int getRecordCount()
+	{
+		return recordCount;
+	}//END OF RECORD COUNT
+	
+	
+	//GET SEARCHED INDEX
+	public int getSearchedIndex()
+	{
+		return searchedIndex;
+	}//END OF GET SEARCHED INDEX
+	
+	
+	
+
+}//END OF USER ACCOUNTS CLASS
