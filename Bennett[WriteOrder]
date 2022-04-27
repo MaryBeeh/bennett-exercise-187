@@ -1,0 +1,97 @@
+//AUTHOR: Mary Bennett
+//DATE: 04/25/2022
+//COURSE: CPT 187
+//PURPOSE: The purpose of this program is to write records to existing records, it will write
+//PURPOSE: the item id, name, price, quantity, and cost
+
+
+
+package edu.cpt187.bennett.exercise7;
+
+//IMPORT PRINT WRITER
+import java.io.PrintWriter;
+//IMPORT FILE WRITER
+import java.io.FileWriter;
+//IMPORT IOEXCEPTION
+import java.io.IOException;
+
+//START OF WRITE ORDER CLASS
+public class WriteOrder 
+{
+	//CLASS ATTRIBUTES
+	private boolean fileFoundFlag = false;
+	private String masterFileName = "";
+	private int recordCount = 0;
+	
+	
+	
+	
+	//CONSTRUCTOR
+	public WriteOrder(String borrowedFileName)
+	{
+		masterFileName = borrowedFileName;
+	}//END OF CONSTRUCTOR
+	
+	
+	
+	
+	//SETTERS
+	
+	
+	//SET WRITE ORDER
+	//APPEND FILE
+	public void setWriteOrder(int borrowedItemID, String borrowedItemName, double borrowedItemPrice, int borrowedQuantity, double borrowedOrderCost)
+	{
+		//TRY BLOCK
+		try
+		{
+			//PRINT FILE
+			PrintWriter filePW = new PrintWriter(new FileWriter(masterFileName, true));
+			
+			filePW.printf("%n%d\t%s\t%f\t%d\t%f", borrowedItemID, borrowedItemName, borrowedItemPrice, borrowedQuantity, borrowedOrderCost);
+			
+			recordCount++;
+			
+			fileFoundFlag = true;
+			
+			//CLOSE FILE
+			filePW.close();
+		}
+		
+		//CATCH BLOCK
+		catch(IOException ex)
+		{
+			fileFoundFlag = false;
+		}//END OF CATCH BLOCK
+	}//END OF SET WRITE ORDER
+	
+	
+	
+	
+	//GETTERS
+	
+	
+	//GET FILE FOUND FLAG
+	public boolean getFileFoundFlag()
+	{
+		return fileFoundFlag;
+	}//END OF GET FILE FOUND FLAG
+	
+	
+	//GET FILE NAME
+	public String getFileName()
+	{
+		return masterFileName;
+	}//END OF GET FILE NAME
+	
+	
+	//GET RECORD COUNT
+	public int getRecordCount()
+	{
+		return recordCount;
+	}//END OF GET RECORD COUNT
+	
+	
+
+	
+}//END OF WRITE ORDER CLASS
